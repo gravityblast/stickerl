@@ -22,6 +22,12 @@ var (
   app     *traffic.Router
 )
 
+func init() {
+  app = traffic.New()
+  app.Get("/", rootHandler)
+  app.Get("/:code", codesHandler)
+}
+
 func usage() {
   fmt.Println("USAGE:")
   fmt.Printf("  %s [OPTIONS] BASE_URL\n", os.Args[0])
@@ -36,7 +42,7 @@ func rootHandler(w traffic.ResponseWriter, r *http.Request) {
   json.NewEncoder(w).Encode(response)
 }
 
-func qrcodesHandler(w traffic.ResponseWriter, r *http.Request) {
+func codesHandler(w traffic.ResponseWriter, r *http.Request) {
   code  := r.URL.Query().Get("code")
   url   := fmt.Sprintf("%s%s", baseUrl, code)
 
@@ -70,8 +76,5 @@ func main() {
   traffic.SetVar("port", port)
   traffic.SetVar("host", host)
 
-  app = traffic.New()
-  app.Get("/", rootHandler)
-  app.Get("/:code", qrcodesHandler)
   app.Run()
 }

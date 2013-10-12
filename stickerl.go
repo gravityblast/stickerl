@@ -72,6 +72,6 @@ func main() {
 
   app = traffic.New()
   app.Get("/", rootHandler)
-  app.Get("/qrcodes/:code", qrcodesHandler)
+  app.Get("/:code", qrcodesHandler)
   app.Run()
 }

@@ -1,6 +1,7 @@
 # Stickerl
 
-A QRCode generator web service for personal url shortener, base on [Traffic](https://github.com/pilu/traffic).
+A QRCode generator web service for personal url shortener, base on [Traffic](https://github.com/pilu/traffic) and
+[qpliu/qrencode-go](https://github.com/qpliu/qrencode-go).
 
 ## Installation
 

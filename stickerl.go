@@ -17,6 +17,8 @@ const VERSION = "0.1.0"
 var (
   baseUrl string
   env     string
+  host    string
+  port    int
   app     *traffic.Router
 )
 
@@ -48,7 +50,9 @@ func qrcodesHandler(w traffic.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-  flag.StringVar(&env, "e", "production", "Traffic ENV")
+  flag.StringVar(&env, "e", "production", "Environment")
+  flag.StringVar(&host, "b", "127.0.0.1", "Host")
+  flag.IntVar(&port, "p", 7000, "Port")
   flag.Parse()
   args := flag.Args()
 
@@ -63,6 +67,8 @@ func main() {
   }
 
   traffic.SetVar("env", env)
+  traffic.SetVar("port", port)
+  traffic.SetVar("host", host)
 
   app = traffic.New()
   app.Get("/", rootHandler)

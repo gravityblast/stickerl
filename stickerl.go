@@ -22,12 +22,6 @@ var (
   app     *traffic.Router
 )
 
-func init() {
-  app = traffic.New()
-  app.Get("/", rootHandler)
-  app.Get("/:code", codesHandler)
-}
-
 func usage() {
   fmt.Println("USAGE:")
   fmt.Printf("  %s [OPTIONS] BASE_URL\n", os.Args[0])
@@ -76,5 +70,8 @@ func main() {
   traffic.SetVar("port", port)
   traffic.SetVar("host", host)
 
+  app = traffic.New()
+  app.Get("/", rootHandler)
+  app.Get("/:code", codesHandler)
   app.Run()
 }

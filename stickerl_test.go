@@ -8,7 +8,7 @@ import (
   assert "github.com/pilu/miniassert"
 )
 
-func newTestRequest(method, path string) (*httptest.ResponseRecorder) {
+func newTestRequest(method, path string) *httptest.ResponseRecorder {
   request, _ := http.NewRequest(method, path, nil)
   recorder := httptest.NewRecorder()
 

@@ -5,7 +5,6 @@ import (
   "fmt"
   "flag"
   "strings"
-  "net/http"
   "image/png"
   "encoding/json"
   "github.com/pilu/traffic"
@@ -28,7 +27,7 @@ func usage() {
   flag.PrintDefaults()
 }
 
-func rootHandler(w traffic.ResponseWriter, r *http.Request) {
+func rootHandler(w traffic.ResponseWriter, r *traffic.Request) {
   response := map[string]string{
     "version": VERSION,
   }
@@ -36,8 +35,8 @@ func rootHandler(w traffic.ResponseWriter, r *http.Request) {
   json.NewEncoder(w).Encode(response)
 }
 
-func codesHandler(w traffic.ResponseWriter, r *http.Request) {
-  code  := r.URL.Query().Get("code")
+func codesHandler(w traffic.ResponseWriter, r *traffic.Request) {
+  code  := r.Param("code")
   url   := fmt.Sprintf("%s%s", baseUrl, code)
 
   grid, err := qrencode.Encode(url, qrencode.ECLevelQ)
@@ -47,6 +46,12 @@ func codesHandler(w traffic.ResponseWriter, r *http.Request) {
 
   w.Header().Set("Content-Type", "image/png")
   png.Encode(w, grid.Image(8))
+}
+
+func init() {
+  app = traffic.New()
+  app.Get("/", rootHandler)
+  app.Get("/:code", codesHandler)
 }
 
 func main() {
@@ -70,8 +75,5 @@ func main() {
   traffic.SetVar("port", port)
   traffic.SetVar("host", host)
 
-  app = traffic.New()
-  app.Get("/", rootHandler)
-  app.Get("/:code", codesHandler)
   app.Run()
 }
